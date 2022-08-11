@@ -5,6 +5,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from pathlib import Path
 from threading import Lock
+from time import time
 from typing import Any, Dict, List, NamedTuple, Optional, TYPE_CHECKING, cast, Set
 from boto3.session import Session
 
@@ -303,6 +304,9 @@ class SyncFlow(ABC):
         List[SyncFlow]
             A list of dependent sync flows
         """
+
+        start_time = time()
+
         dependencies: List["SyncFlow"] = list()
         LOG.debug("%sSetting Up", self.log_prefix)
         self.set_up()
@@ -315,6 +319,10 @@ class SyncFlow(ABC):
             LOG.debug("%sGathering Dependencies", self.log_prefix)
             dependencies = self.gather_dependencies()
         LOG.debug("%sFinished", self.log_prefix)
+
+        end_time = time()
+        print(f"\n\nfinished sync\n{end_time - start_time}\n\n")
+
         return dependencies
 
 
