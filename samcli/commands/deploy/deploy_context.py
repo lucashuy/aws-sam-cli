@@ -331,7 +331,6 @@ class DeployContext:
             if key in parameter_overrides:
                 obj["ParameterValue"] = parameter_overrides[key]
             else:
-                print(value)
                 default_value = value.get("Default")
 
                 if default_value:
