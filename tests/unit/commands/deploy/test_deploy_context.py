@@ -146,14 +146,14 @@ class TestSamDeployCommand(TestCase):
         patched_get_buildable_stacks.return_value = (Mock(), [])
         patched_auth_required.return_value = [("HelloWorldFunction", False)]
         with tempfile.NamedTemporaryFile(delete=False) as template_file:
-            template_file.write(b'{"Parameters": {"a":"b","c":"d"}}')
+            template_file.write(b'{"Parameters": {"a": {"Default": "b"},"c": {"Default": "d"}}}')
             template_file.flush()
             self.deploy_command_context.template_file = template_file.name
             self.deploy_command_context.run()
             self.assertEqual(self.deploy_command_context.deployer.create_and_wait_for_changeset.call_count, 1)
             self.assertEqual(
                 self.deploy_command_context.deployer.create_and_wait_for_changeset.call_args[1]["parameter_values"],
-                [{"ParameterKey": "a", "ParameterValue": "b"}, {"ParameterKey": "c", "UsePreviousValue": True}],
+                [{"ParameterKey": "a", "ParameterValue": "b"}, {"ParameterKey": "c", "ParameterValue": "d"}],
             )
             patched_get_buildable_stacks.assert_called_once_with(
                 ANY, parameter_overrides={"a": "b"}, global_parameter_overrides={"AWS::Region": "any-aws-region"}
@@ -193,7 +193,7 @@ class TestSamDeployCommand(TestCase):
         patched_get_buildable_stacks.return_value = (Mock(), [])
         patched_auth_required.return_value = [("HelloWorldFunction", False)]
         with tempfile.NamedTemporaryFile(delete=False) as template_file:
-            template_file.write(b'{"Parameters": {"a":"b","c":"d"}}')
+            template_file.write(b'{"Parameters": {"a": {"Default": "b"},"c": {"Default": "d"}}}')
             template_file.flush()
             sync_context.template_file = template_file.name
             sync_context.run()
@@ -210,7 +210,7 @@ class TestSamDeployCommand(TestCase):
             )
             self.assertEqual(
                 sync_context.deployer.sync.call_args[1]["cfn_template"],
-                '{"Parameters": {"a":"b","c":"d"}}',
+                '{"Parameters": {"a": {"Default": "b"},"c": {"Default": "d"}}}',
             )
             self.assertEqual(
                 sync_context.deployer.sync.call_args[1]["notification_arns"],

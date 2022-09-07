@@ -325,14 +325,19 @@ class DeployContext:
         if not isinstance(template_dict.get("Parameters", None), dict):
             return parameter_values
 
-        for key, _ in template_dict["Parameters"].items():
-
+        for key, value in template_dict["Parameters"].items():
             obj = {"ParameterKey": key}
 
             if key in parameter_overrides:
                 obj["ParameterValue"] = parameter_overrides[key]
             else:
-                obj["UsePreviousValue"] = True
+                print(value)
+                default_value = value.get("Default")
+
+                if default_value:
+                    obj["ParameterValue"] = default_value
+                else:
+                    obj["UsePreviousValue"] = True
 
             parameter_values.append(obj)
 
