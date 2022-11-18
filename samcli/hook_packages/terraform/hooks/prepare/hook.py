@@ -17,6 +17,7 @@ import logging
 import shutil
 import uuid
 
+from samcli.hook_packages.terraform.hooks.prepare.graph import parse_output
 from samcli.hook_packages.terraform.hooks.prepare.resource_linking import (
     _link_lambda_function_to_layer,
     _get_configuration_address,
@@ -176,7 +177,15 @@ def prepare(params: dict) -> dict:
                     capture_output=True,
                     cwd=terraform_application_dir,
                 )
+
+                dot_structure = run(
+                    ["terraform", "graph", "-plan", temp_file.name],
+                    check=True,
+                    capture_output=True,
+                    cwd=terraform_application_dir,
+                )
             tf_json = json.loads(result.stdout)
+            parse_output(dot_structure.stdout.decode().split("\n"))
 
             # convert terraform to cloudformation
             LOG.info("Generating metadata file")

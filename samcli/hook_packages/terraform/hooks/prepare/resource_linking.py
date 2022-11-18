@@ -687,49 +687,72 @@ def _process_reference_layer_value(
         The resolved layers values that will be used as a value for the mapped CFN function Layers attribute.
 
     """
-    LOG.debug("Process the reference layer %s.", resolved_layer.value)
+    layer = resolved_layer
+
+    LOG.debug("Process the reference layer %s.", layer.value)
     # skip processing the data source block, as it should be mapped while executing the terraform plan command.
-    if resolved_layer.value.startswith(DATA_RESOURCE_ADDRESS_PREFIX):
-        LOG.debug("Skip processing the reference layer %s, as it is referring to a data resource", resolved_layer.value)
+    if layer.value.startswith(DATA_RESOURCE_ADDRESS_PREFIX):
+        LOG.debug("Skip processing the reference layer %s, as it is referring to a data resource", layer.value)
         return []
 
+    has_resolved_local = False
     # resolved reference is a local variable
-    if resolved_layer.value.startswith(TERRAFORM_LOCAL_VARIABLES_ADDRESS_PREFIX):
-        LOG.debug("AWS SAM CLI could not process the Local variables %s", resolved_layer.value)
-        raise LocalVariablesLinkingLimitationException(resolved_layer.value, function_tf_resource.full_address)
+    if layer.value.startswith(TERRAFORM_LOCAL_VARIABLES_ADDRESS_PREFIX):
+        from samcli.hook_packages.terraform.hooks.prepare.graph import find
+
+        result = find(layer.value)
+        if result:
+            has_resolved_local = True
+            layer = ResolvedReference(result, None)
+
+        if not has_resolved_local:
+            LOG.debug("AWS SAM CLI could not process the Local variables %s", layer.value)
+            # raise LocalVariablesLinkingLimitationException(layer.value, function_tf_resource.full_address)
+            raise InvalidResourceLinkingException(f"{layer.value} could not be resolved to a Lambda Function Layer")
 
     # Valid Layer resource
-    if resolved_layer.value.startswith(LAMBDA_LAYER_RESOURCE_ADDRESS_PREFIX):
-        LOG.debug("Process the Layer version resource %s", resolved_layer.value)
-        if not resolved_layer.value.endswith("arn"):
-            LOG.debug("The used property in reference %s is not an ARN property", resolved_layer.value)
+    if layer.value.startswith(LAMBDA_LAYER_RESOURCE_ADDRESS_PREFIX):
+        LOG.debug("Process the Layer version resource %s", layer.value)
+        if not layer.value.endswith("arn"):
+            LOG.debug("The used property in reference %s is not an ARN property", layer.value)
             raise InvalidResourceLinkingException(
-                f"Could not use the value {resolved_layer.value} as a Layer for lambda function "
+                f"Could not use the value {layer.value} as a Layer for lambda function "
                 f"{function_tf_resource.full_address}. Lambda Function Layer value should refer to valid "
                 f"lambda layer ARN property"
             )
 
-        tf_layer_res_name = resolved_layer.value[len(LAMBDA_LAYER_RESOURCE_ADDRESS_PREFIX) : -len(".arn")]
-        if resolved_layer.module_address:
+        tf_layer_res_name = layer.value[len(LAMBDA_LAYER_RESOURCE_ADDRESS_PREFIX) : -len(".arn")]
+        if layer.module_address:
             tf_layer_full_address = (
-                f"{resolved_layer.module_address}.{LAMBDA_LAYER_RESOURCE_ADDRESS_PREFIX}" f"{tf_layer_res_name}"
+                f"{layer.module_address}.{LAMBDA_LAYER_RESOURCE_ADDRESS_PREFIX}" f"{tf_layer_res_name}"
             )
         else:
             tf_layer_full_address = f"{LAMBDA_LAYER_RESOURCE_ADDRESS_PREFIX}{tf_layer_res_name}"
         cfn_layer_logical_id = build_cfn_logical_id(tf_layer_full_address)
-        LOG.debug("The logical id of the resource referred by %s is %s", resolved_layer.value, cfn_layer_logical_id)
+        LOG.debug("The logical id of the resource referred by %s is %s", layer.value, cfn_layer_logical_id)
 
         # validate that the found layer is in mapped layers resources, which means that it is created.
         # The resource can be defined in the TF plan configuration, but will not be created.
         layers = []
         if cfn_layer_logical_id in tf_layers:
-            LOG.debug("The resource referred by %s can be found in the mapped layers resources", resolved_layer.value)
+            LOG.debug("The resource referred by %s can be found in the mapped layers resources", layer.value)
+            layers.append({"Ref": cfn_layer_logical_id})
+        return layers
+    elif has_resolved_local:
+        cfn_layer_logical_id = build_cfn_logical_id(layer.value)
+        LOG.debug("The logical id of the resource referred by %s is %s", layer.value, cfn_layer_logical_id)
+
+        # validate that the found layer is in mapped layers resources, which means that it is created.
+        # The resource can be defined in the TF plan configuration, but will not be created.
+        layers = []
+        if cfn_layer_logical_id in tf_layers:
+            LOG.debug("The resource referred by %s can be found in the mapped layers resources", layer.value)
             layers.append({"Ref": cfn_layer_logical_id})
         return layers
     # it means the Lambda function is referring to a wrong layer resource type
-    LOG.debug("The used reference %s is not a Layer Version resource.", resolved_layer.value)
+    LOG.debug("The used reference %s is not a Layer Version resource.", layer.value)
     raise InvalidResourceLinkingException(
-        f"Could not use the value {resolved_layer.value} as a Layer for lambda function "
+        f"Could not use the value {layer.value} as a Layer for lambda function "
         f"{function_tf_resource.full_address}. Lambda Function Layer value should refer to valid lambda layer ARN "
         f"property"
     )
