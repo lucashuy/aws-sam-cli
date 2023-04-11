@@ -53,9 +53,7 @@ jobs:
       with:
         python-version: ${{ matrix.python }}
     - run: test -f "./.github/ISSUE_TEMPLATE/Bug_report.md"  # prevent Bug_report.md from being renamed or deleted
-    - uses: ./.github/workflows/setup-sam-cli.yml
-      with:
-        os: ${{ matrix.os }}
+    - run: make init
     - run: make pr
 
   create-buildcmd-cases:
@@ -161,9 +159,8 @@ jobs:
       - name: Install Cargo Lambda
         run: pip install cargo-lambda==$CARGO_LAMBDA_VERSION
       - run: echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - uses: ./.github/workflows/setup-sam-cli.yml
-        with:
-          os: ${{ matrix.os }}
+      - name: Init samdev
+        run: make init
       - name: Run integration tests for ${{ matrix.tests_folder }}
         run: pytest -vv tests/integration/${{ matrix.tests_folder }}
 
@@ -193,8 +190,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
-      - uses: ./.github/workflows/setup-sam-cli.yml
-        with:
-          os: ${{ matrix.os }}
+      - name: Init samdev
+        run: make init
       - name: Run functional & smoke tests
         run: pytest -vv -n 4 tests/functional tests/smoke
