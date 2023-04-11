@@ -112,7 +112,7 @@ jobs:
           #- "validate"
           - "docs"
         include:
-          tests_folder: ${{ needs.create-buildcmd-cases.outputs.build-files }}
+          - tests_folder: ${{ needs.create-buildcmd-cases.outputs.build-files }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
