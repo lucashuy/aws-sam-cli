@@ -111,7 +111,7 @@ jobs:
           #- "traces"
           #- "validate"
           - "docs"
-        includes:
+        include:
           tests_folder: ${{ needs.create-buildcmd-cases.outputs.build-files }}
     steps:
       - uses: actions/checkout@v3
