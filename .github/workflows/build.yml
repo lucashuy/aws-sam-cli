@@ -70,6 +70,7 @@ jobs:
             const fs = require("fs");
 
             return fs.readdirSync("tests/integration/buildcmd").filter(fileName => fileName.startsWith("test_") && fileName.endsWith(".py"))
+      - run: echo ${{ steps.create-test-cases.outputs.result }}
 
   integration-tests:
     name: Integration Tests / ${{ matrix.os }} / ${{ matrix.python }} / ${{ matrix.tests_folder }}
