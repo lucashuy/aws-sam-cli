@@ -56,6 +56,20 @@ jobs:
     - run: make init
     - run: make pr
 
+  create-buildcmd-cases:
+    name: Create Test Cases For Build
+    runs-on: ubuntu-latest
+    outputs:
+      build-files: ${{ steps.create-test-cases.outputs.result }}
+    steps:
+      - uses: actions/github-script@v6
+        id: create-test-cases
+        with:
+          script: |
+            const fs = require("fs");
+
+            return fs.readdirSync("tests/integration/buildcmd").filter(fileName => fileName.startsWith("test_") && fileName.endsWith(".py"))
+
   integration-tests:
     name: Integration Tests / ${{ matrix.os }} / ${{ matrix.python }} / ${{ matrix.tests_folder }}
     if: github.repository_owner == 'aws'
@@ -68,6 +82,7 @@ jobs:
     defaults:
       run:
         shell: bash
+    needs: create-buildcmd-cases
     strategy:
       fail-fast: false
       matrix:
@@ -80,7 +95,6 @@ jobs:
           - "3.9"
         # folders that is commented below requires credentials, no need to spare time to run them
         tests_folder:
-          - "buildcmd"
           #- "delete"
           #- "deploy"
           - "init"
@@ -97,6 +111,8 @@ jobs:
           #- "traces"
           #- "validate"
           - "docs"
+        includes:
+          tests_folder: ${{ needs.create-buildcmd-cases.outputs.build-files }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
