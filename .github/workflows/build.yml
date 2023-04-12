@@ -69,7 +69,7 @@ jobs:
           script: |
             const fs = require("fs");
 
-            return fs.readdirSync("tests/integration/buildcmd").filter(fileName => fileName.startsWith("test_") && fileName.endsWith(".py"))
+            return fs.readdirSync("tests/integration/buildcmd").filter(fileName => fileName.startsWith("test_") && fileName.endsWith(".py")).map(fileName => "buildcmd/" + fileName)
 
   integration-tests:
     name: Integration Tests / ${{ matrix.os }} / ${{ matrix.python }} / ${{ matrix.tests_folder }}
@@ -112,11 +112,9 @@ jobs:
           #- "traces"
           #- "validate"
           - "docs"
-        # include:
-        #   - tests_folder: ${{ fromJSON(needs.create-buildcmd-cases.outputs.build-files) }}
+        include:
+          - tests_folder: ${{ needs.create-buildcmd-cases.outputs.build-files }}
     steps:
-      - run: echo "${{ needs.create-buildcmd-cases.outputs.build-files }}"
-      - run: echo "${{ fromJSON(needs.create-buildcmd-cases.outputs.build-files) }}"
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
