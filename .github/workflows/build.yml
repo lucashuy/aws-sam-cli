@@ -112,8 +112,10 @@ jobs:
           #- "traces"
           #- "validate"
           - "docs"
-        include: ${{ fromJSON(needs.create-buildcmd-cases.outputs.build-files) }}
+        # include: ${{ fromJSON(needs.create-buildcmd-cases.outputs.build-files) }}
     steps:
+      - run: echo ${{ needs.create-buildcmd-cases.outputs.build-files }}
+      - run: echo ${{ fromJSON(needs.create-buildcmd-cases.outputs.build-files) }}
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
