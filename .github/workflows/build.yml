@@ -21,7 +21,7 @@ concurrency:
 jobs:
   run-workflow:
     name: PR Workflow
-    if: github.repository_owner == 'aws'
+    #if: github.repository_owner == 'aws'
     runs-on: ubuntu-latest
     needs:
       - make-pr
@@ -41,7 +41,7 @@ jobs:
 
   make-pr:
     name: make pr / ${{ matrix.os }} / ${{ matrix.python }}
-    if: github.repository_owner == 'aws'
+    #if: github.repository_owner == 'aws'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -66,7 +66,7 @@ jobs:
 
   integration-tests:
     name: Integration Tests / ${{ matrix.os }} / ${{ matrix.python }} / ${{ matrix.tests_folder }}
-    if: github.repository_owner == 'aws'
+    #if: github.repository_owner == 'aws'
     runs-on: ${{ matrix.os }}
     env:
       AWS_DEFAULT_REGION: us-east-1
@@ -163,7 +163,7 @@ jobs:
 
   smoke-and-functional-tests:
     name: Functional & Smoke Tests / ${{ matrix.os }} / ${{ matrix.python }}
-    if: github.repository_owner == 'aws'
+    #if: github.repository_owner == 'aws'
     runs-on: ${{ matrix.os }}
     env:
       AWS_DEFAULT_REGION: us-east-1
@@ -195,7 +195,7 @@ jobs:
 
   docker-disabled:
     name: Docker-disabled Tests / ${{ matrix.os }}
-    if: github.repository_owner == 'aws'
+    #if: github.repository_owner == 'aws'
     runs-on: ${{ matrix.os }}
     env:
       SAM_CLI_DEV: "1"
