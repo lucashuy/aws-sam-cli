@@ -4,10 +4,15 @@ on:
     types: [opened]
 
 jobs:
+  get-branch:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repo: ${{ github.repository }}
   apply-file-based-labels:
-    needs: apply-internal-external-label
+    needs: [apply-internal-external-label, get-branch]
     permissions:
-      contents: read
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
