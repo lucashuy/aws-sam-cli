@@ -73,3 +73,7 @@ area/traces:
 area/schema:
 - schema/*
 - schema/**/*
+
+test:
+- '*/*'
+- '**/*'
