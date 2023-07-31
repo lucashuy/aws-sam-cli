@@ -7,6 +7,7 @@ jobs:
   apply-file-based-labels:
     needs: apply-internal-external-label
     permissions:
+      contents: read
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
