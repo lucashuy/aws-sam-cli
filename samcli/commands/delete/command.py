@@ -131,3 +131,4 @@ def do_cli(
         s3_prefix=s3_prefix,
     ) as delete_context:
         delete_context.run()
+        # hello world
