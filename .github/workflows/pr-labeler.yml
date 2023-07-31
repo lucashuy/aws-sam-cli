@@ -5,6 +5,7 @@ on:
 
 jobs:
   apply-file-based-labels:
+    needs: apply-internal-external-label
     permissions:
       pull-requests: write
     runs-on: ubuntu-latest
@@ -13,7 +14,6 @@ jobs:
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
   apply-internal-external-label:
-    needs: apply-file-based-labels
     permissions:
       pull-requests: write
     runs-on: ubuntu-latest
