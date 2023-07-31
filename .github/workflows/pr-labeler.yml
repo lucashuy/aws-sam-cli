@@ -5,6 +5,7 @@ on:
 
 jobs:
   apply-file-based-labels:
+    needs: apply-internal-external-label
     permissions:
       pull-requests: write
     runs-on: ubuntu-latest
