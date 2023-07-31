@@ -4,16 +4,13 @@ on:
     types: [opened]
 
 jobs:
-  get-branch:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
   apply-file-based-labels:
-    needs: [apply-internal-external-label, get-branch]
+    needs: [apply-internal-external-label]
     permissions:
       pull-requests: write
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - uses: actions/labeler@v4
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
