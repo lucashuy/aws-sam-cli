@@ -383,9 +383,9 @@ mypy-boto3-cloudformation==1.28.0 \
     --hash=sha256:0d2ead02c352bc97ae59b65ae8b00d5ce186435b7cf5736213a52f58df192511 \
     --hash=sha256:99d5db7d6b220ba016757670a917bdfdab1c475593153833ed6c5cdd9a9aa9ba
     # via boto3-stubs
-mypy-boto3-ecr==1.28.0 \
-    --hash=sha256:46b493af9024e230f7b81c7dc1ca2b52d5cca168f867be60a55ce0b86a3999f7 \
-    --hash=sha256:d4cbad3f4d33abbfe0a7d7504b38f01d256c5200d754b5289d1f373bcd595bf4
+mypy-boto3-ecr==1.28.16 \
+    --hash=sha256:412aa7e26d20e7502267e5fec4d94f0bc48db0ced24f65d207911fe70585a4cd \
+    --hash=sha256:b3252c5eda47ca1e90980e0158410e8a76c8acdfbda0907f545ddfddaea95258
     # via boto3-stubs
 mypy-boto3-iam==1.28.3.post2 \
     --hash=sha256:16d642b5507067bd2cfae5e3fd149b9ccf7070bc98e7214058cae40c478eaccf \
