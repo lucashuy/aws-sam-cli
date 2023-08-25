@@ -298,9 +298,9 @@ jsonpointer==2.3 \
     --hash=sha256:51801e558539b4e9cd268638c078c6c5746c9ac96bc38152d443400e4f3793e9 \
     --hash=sha256:97cba51526c829282218feb99dab1b1e6bdf8efd1c43dc9d57be093c0d69c99a
     # via jsonpatch
-jsonschema==4.17.3 \
-    --hash=sha256:0f864437ab8b6076ba6707453ef8f98a6a0d512a80e93f8abdb676f737ecb60d \
-    --hash=sha256:a870ad254da1a8ca84b6a2905cac29d265f805acc57af304784962a2aa6508f6
+jsonschema==4.19.0 \
+    --hash=sha256:043dc26a3845ff09d20e4420d6012a9c91c9aa8999fa184e7efcfeccb41e32cb \
+    --hash=sha256:6e1e7569ac13be8139b2dd2c21a55d350066ee3f80df06c608b398cdc6f30e8f
     # via
     #   aws-sam-cli (setup.py)
     #   aws-sam-translator
