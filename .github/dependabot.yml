@@ -1,6 +1,5 @@
 version: 2
 updates:
-
   # - package-ecosystem: "github-actions"
   #   directory: "/"
   #   schedule:
@@ -12,45 +11,6 @@ updates:
   #     - aws/serverless-application-experience-sbt
   #   open-pull-requests-limit: 10
 
-  # - package-ecosystem: "pip"
-  #   directory: "/requirements"
-  #   schedule:
-  #     interval: "daily"
-  #   target-branch: "develop"
-  #   commit-message:
-  #     prefix: chore
-  #     include: scope
-  #   reviewers:
-  #     -  aws/serverless-application-experience-sbt
-  #   open-pull-requests-limit: 10
-  #   groups:
-  #     types:
-  #       patterns:
-  #       - "types-*"
-  #     pytest:
-  #       patterns:
-  #       - "pytest-*"
-  #       exclude-patterns:
-  #       # ignore metadata and json-report since newer versions conflict
-  #       # as of writing this
-  #       - "pytest-metadata"
-  #       - "pytest-json-report"
-  #   ignore:
-  #     # Ignored intentionally since we have a GHA that updates to more
-  #     # completely
-  #     - dependency-name: "aws-sam-translator"
-  #     # Ignored intentionally since we have a GHA that updates to more
-  #     # completely
-  #     - dependency-name: "aws_lambda_builders"
-  #     # The dependencies are intentionally pinned to certain
-  #     # version ranges for specific Python versions
-  #     - dependency-name: "flake8"
-  #     - dependency-name: "isort"
-  #     # boto3 test
-  #     - dependency-name: "boto3*"
-  #     - dependency-name: "botocore*"
-  #     - dependency-name: "mypy-boto3-*"
-
   - package-ecosystem: "pip"
     directory: "/requirements"
     schedule:
@@ -61,17 +21,66 @@ updates:
       include: scope
     # reviewers:
     #   -  aws/serverless-application-experience-sbt
-    open-pull-requests-limit: 1
+    open-pull-requests-limit: 10
+    groups:
+      types:
+        patterns:
+        - "types-*"
+      pytest:
+        patterns:
+        - "pytest-*"
+        exclude-patterns:
+        # ignore metadata and json-report since newer versions conflict
+        # as of writing this
+        - "pytest-metadata"
+        - "pytest-json-report"
+    ignore:
+      # Ignored intentionally since we have a GHA that updates to more
+      # completely
+      - dependency-name: "aws-sam-translator"
+      # Ignored intentionally since we have a GHA that updates to more
+      # completely
+      - dependency-name: "aws_lambda_builders"
+      # The dependencies are intentionally pinned to certain
+      # version ranges for specific Python versions
+      - dependency-name: "flake8"
+      - dependency-name: "isort"
+      # Ignore boto3 related updates to handle the version bump in
+      # a different group since dependabot will unpin the lower bound
+      # automatically
+      #
+      # Dependencies are more specific here (rather than just boto*)
+      # to prevent accidential include/exclude should anything
+      # change in the future
+      - dependency-name: "boto3"
+      - dependency-name: "boto3-stubs*"
+      - dependency-name: "botocore"
+      - dependency-name: "botocore-stubs"
+      - dependency-name: "mypy-boto3-*"
+
+  # Handle boto3 related updates in it's own group to control
+  # how dependabot updates the pin in the requirements/base.txt
+  #
+  # example of what we want to avoid:
+  # https://github.com/aws/aws-sam-cli/pull/5918#discussion_r1323512296
+  - package-ecosystem: "pip"
+    directory: "/requirements"
+    schedule:
+      interval: "daily"
+    target-branch: "develop"
+    commit-message:
+      prefix: chore
+      include: scope
+    reviewers:
+      -  aws/serverless-application-experience-sbt
     groups:
       boto:
         patterns:
-        - "boto3"
-        - "boto3-stubs*"
-        - "botocore"
-        - "botocore-stubs"
-        - "mypy-boto3-*"
+          - "*"
     allow:
-      - dependency-name: "boto3*"
-      - dependency-name: "botocore*"
+      - dependency-name: "boto3"
+      - dependency-name: "boto3-stubs*"
+      - dependency-name: "botocore"
+      - dependency-name: "botocore-stubs"
       - dependency-name: "mypy-boto3-*"
     versioning-strategy: "increase-if-necessary"
