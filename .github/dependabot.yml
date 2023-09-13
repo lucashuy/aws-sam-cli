@@ -34,6 +34,7 @@ updates:
         # as of writing this
         - "pytest-metadata"
         - "pytest-json-report"
+        versioning-strategy: "increase-if-necessary"
     ignore:
       # Ignored intentionally since we have a GHA that updates to more
       # completely
@@ -63,24 +64,24 @@ updates:
   #
   # example of what we want to avoid:
   # https://github.com/aws/aws-sam-cli/pull/5918#discussion_r1323512296
-  - package-ecosystem: "pip"
-    directory: "/requirements"
-    schedule:
-      interval: "daily"
-    target-branch: "develop"
-    commit-message:
-      prefix: chore
-      include: scope
-    reviewers:
-      -  aws/serverless-application-experience-sbt
-    groups:
-      boto:
-        patterns:
-          - "*"
-    allow:
-      - dependency-name: "boto3"
-      - dependency-name: "boto3-stubs*"
-      - dependency-name: "botocore"
-      - dependency-name: "botocore-stubs"
-      - dependency-name: "mypy-boto3-*"
-    versioning-strategy: "increase-if-necessary"
+  # - package-ecosystem: "pip"
+  #   directory: "/requirements"
+  #   schedule:
+  #     interval: "daily"
+  #   target-branch: "develop"
+  #   commit-message:
+  #     prefix: chore
+  #     include: scope
+  #   reviewers:
+  #     -  aws/serverless-application-experience-sbt
+  #   groups:
+  #     boto:
+  #       patterns:
+  #         - "*"
+  #   allow:
+  #     - dependency-name: "boto3"
+  #     - dependency-name: "boto3-stubs*"
+  #     - dependency-name: "botocore"
+  #     - dependency-name: "botocore-stubs"
+  #     - dependency-name: "mypy-boto3-*"
+  #   versioning-strategy: "increase-if-necessary"
