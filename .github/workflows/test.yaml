@@ -6,6 +6,9 @@ on:
 jobs:
   python-integration:
     runs-on: windows-latest
+    env:
+      AWS_DEFAULT_REGION: us-east-1
+      SAM_CLI_DEV: "1"
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v4
