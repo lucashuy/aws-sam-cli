@@ -13,4 +13,4 @@ jobs:
           python-version: "3.9"
       - run: 'python.exe -c "import pip; print(pip.__version__)"'
       - run: "make init"
-      - run: "tests/integration/buildcmd/test_build_cmd.py::TestBuildCommand_PythonFunctions_WithoutDocker_2_template_yaml::test_with_default_requirements"
+      - run: "pytest tests/integration/buildcmd/test_build_cmd.py::TestBuildCommand_PythonFunctions_WithoutDocker_2_template_yaml::test_with_default_requirements"
