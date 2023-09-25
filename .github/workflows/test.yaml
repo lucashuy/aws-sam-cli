@@ -12,3 +12,5 @@ jobs:
         with:
           python-version: "3.9"
       - run: 'python.exe -c "import pip; print(pip.__version__)"'
+      - run: "make init"
+      - run: "pytest -vv tests/integration/workflows/python_pip"
