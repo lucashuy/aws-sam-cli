@@ -1,0 +1,14 @@
+name: test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  python-integration:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.9"
+      - run: 'python.exe -c "import pip; print(pip.__version__)"'
