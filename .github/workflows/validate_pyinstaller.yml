@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - develop
+      - master
 
 env:
   CI_OVERRIDE: "1"
@@ -13,7 +14,6 @@ jobs:
     name: build-pyinstaller-linux
     runs-on: ubuntu-latest
     container: quay.io/pypa/manylinux2014_x86_64:latest
-    if: github.repository_owner == 'aws'
     strategy:
       fail-fast: false
     steps:
@@ -44,7 +44,6 @@ jobs:
   build-for-mac:
     name: build-pyinstaller-macos
     runs-on: macos-latest
-    if: github.repository_owner == 'aws'
     strategy:
       fail-fast: false
     steps:
