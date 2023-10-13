@@ -21,7 +21,6 @@ concurrency:
 jobs:
   run-workflow:
     name: PR Workflow
-    if: github.repository_owner == 'aws'
     runs-on: ubuntu-latest
     needs:
       - make-pr
@@ -43,7 +42,6 @@ jobs:
 
   make-pr:
     name: make pr / ${{ matrix.os }} / ${{ matrix.python }}
-    if: github.repository_owner == 'aws'
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -68,7 +66,6 @@ jobs:
 
   validate-schema:
     name: Validate JSON schema
-    if: github.repository_owner == 'aws'
     permissions:
       pull-requests: write
       contents: write
@@ -89,7 +86,6 @@ jobs:
 
   integration-tests:
     name: Integ / ${{ matrix.os }} / ${{ matrix.python }} / ${{ matrix.tests_config }}
-    if: github.repository_owner == 'aws'
     runs-on: ${{ matrix.os }}
     env:
       AWS_DEFAULT_REGION: us-east-1
@@ -179,7 +175,6 @@ jobs:
 
   smoke-and-functional-tests:
     name: Functional & Smoke Tests / ${{ matrix.os }} / ${{ matrix.python }}
-    if: github.repository_owner == 'aws'
     runs-on: ${{ matrix.os }}
     env:
       AWS_DEFAULT_REGION: us-east-1
@@ -211,7 +206,6 @@ jobs:
 
   docker-disabled:
     name: Docker-disabled Tests / ${{ matrix.os }}
-    if: github.repository_owner == 'aws'
     runs-on: ${{ matrix.os }}
     env:
       SAM_CLI_DEV: "1"
