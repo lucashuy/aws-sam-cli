@@ -1,7 +1,0 @@
-{
-  "questions": [{
-    "key": "food",
-    "question": "What is your favorite food?",
-    "default": "Pizza"
-  }]
-}
