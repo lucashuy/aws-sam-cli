@@ -1,0 +1,10 @@
+{
+    "name": "layer1",
+    "version": "1.0.0",
+    "description": "layer1",
+    "author": "SAM CLI",
+    "license": "MIT",
+    "dependencies": {
+        "axios": ">=0.21.1"
+    }
+}
