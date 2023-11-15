@@ -1,8 +1,0 @@
-version: 0.1
-default:
-  global:
-    parameters:
-      hook_name: terraform
-  build:
-    parameters:
-      terraform_project_root_path: ./..

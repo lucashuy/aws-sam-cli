@@ -1,8 +1,0 @@
-Globals:
-  Api:
-    AlwaysDeploy: true
-Resources:
-  MyApi:
-    Type: AWS::Serverless::Api
-    Properties:
-      StageName: MyStage

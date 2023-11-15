@@ -1,4 +1,0 @@
-version = 0.1
-
-[default.local_start_lambda]
-debug = false
