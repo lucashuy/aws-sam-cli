@@ -1,0 +1,10 @@
+{
+    "name": "axioslayer",
+    "version": "1.0.0",
+    "description": "axioslayer",
+    "author": "SAM CLI",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^1.6.2"
+    }
+}

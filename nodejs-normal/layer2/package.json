@@ -1,0 +1,10 @@
+{
+    "name": "fakerlayer",
+    "version": "1.0.0",
+    "description": "fakerlayer",
+    "author": "SAM CLI",
+    "license": "MIT",
+    "dependencies": {
+        "@faker-js/faker": "^8.3.1"
+    }
+}

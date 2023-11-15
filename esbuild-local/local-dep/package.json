@@ -1,0 +1,9 @@
+{
+    "name": "local-dep",
+    "version": "1.0.0",
+    "description": "local-dep",
+    "main": "local.js",
+    "author": "SAM CLI",
+    "license": "MIT",
+    "dependencies": {}
+}

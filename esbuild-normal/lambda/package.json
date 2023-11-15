@@ -1,0 +1,13 @@
+{
+    "name": "nodejs",
+    "version": "1.0.0",
+    "description": "nodejs",
+    "main": "app.js",
+    "author": "SAM CLI",
+    "license": "MIT",
+    "dependencies": {
+        "esbuild": "^0.14.14",
+        "axios": ">=0.21.1",
+        "@faker-js/faker": "7.1.0"
+    }
+}

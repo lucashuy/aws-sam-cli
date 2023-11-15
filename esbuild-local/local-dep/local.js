@@ -1,0 +1,1 @@
+exports.localDepVariable = "this is from the esbuild local dependency";

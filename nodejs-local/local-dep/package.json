@@ -1,0 +1,12 @@
+{
+    "name": "local-dep",
+    "version": "1.0.0",
+    "description": "local-dep",
+    "main": "local.js",
+    "author": "SAM CLI",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "1.6.2",
+        "@faker-js/faker": "8.3.1"
+    }
+}
