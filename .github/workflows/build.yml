@@ -26,10 +26,19 @@ jobs:
     if: always()
     runs-on: ubuntu-latest
     needs:
+      - make-pr
       - validate-schema
+      - integration-tests
+      - smoke-and-functional-tests
+      - docker-disabled
     steps:
       - name: report-failure
-        if : needs.validate-schema.result != 'success'
+        if : |
+          needs.make-pr.result != 'success' ||
+          needs.validate-schema.result != 'success' ||
+          needs.integration-tests.result != 'success' ||
+          needs.smoke-and-functional-tests.result != 'success' ||
+          needs.docker-disabled.result != 'success'
         run: exit 1
       - name: report-success
         run: exit 0
